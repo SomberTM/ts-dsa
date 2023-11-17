@@ -9,6 +9,8 @@ Various Data Structures & Algorithms implemented in TypeScript
   - 2-3 Tree
   - Red Black Tree
   - LLRB Tree
+  - AVL Tree
+  - Splay Tree
 - Heap
   - Min/Max Binary Heap
   - Fibonnaci Heap
@@ -41,5 +43,10 @@ Various Data Structures & Algorithms implemented in TypeScript
   - Merge
   - Heapsort
   - Quicksort
+  - Shell Sort
+  - Special Sorting:
+    - Counting
+    - Bucket
+    - Radix
  
   
