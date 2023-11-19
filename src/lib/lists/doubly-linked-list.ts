@@ -30,26 +30,63 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
     return node;
   }
 
-  remove(value: T): IDoublyLinkedNode<T> | undefined {
-    throw new Error("Method not implemented.");
-  }
-
-  removeRoot(): IDoublyLinkedNode<T> | undefined {
+  private deleteNode(node: IDoublyLinkedNode<T>) {
     this.size--;
     if (this.size === 0) {
-      const node = this.root;
       this.root = undefined;
       this.tail = undefined;
-      return node;
     } else {
-      const root = this.root;
-      this.root = this.root?.next;
-      if (this.root) this.root.previous = undefined;
-      return root;
+      if (this.root === node) {
+        this.root = node.next;
+        if (this.root) this.root.previous = undefined;
+      } else if (this.tail === node) {
+        this.tail = node.previous;
+        if (this.tail) this.tail.next = undefined;
+      }
+
+      if (node.next) node.next.previous = node.previous;
+      if (node.previous) node.previous.next = node.next;
     }
   }
 
+  remove(value: T): IDoublyLinkedNode<T> | undefined {
+    const node = this.find((node) => node.value === value);
+    if (!node) return;
+
+    this.deleteNode(node);
+    return node;
+  }
+
+  removeRoot(): IDoublyLinkedNode<T> | undefined {
+    const node = this.root;
+    if (node) this.deleteNode(node);
+    return node;
+  }
+
+  removeTail(): IDoublyLinkedNode<T> | undefined {
+    const node = this.tail;
+    if (node) this.deleteNode(node);
+    return node;
+  }
+
   find(callback: (node: IDoublyLinkedNode<T>) => boolean): IDoublyLinkedNode<T> | undefined {
-    throw new Error("Method not implemented.");
+    let current = this.root;
+    while (current !== undefined) {
+      if (callback(current)) return current;
+      current = current.next;
+    }
+    return undefined;
+  }
+
+  toArray(): T[] {
+    const array: T[] = [];
+
+    let current = this.root;
+    while (current !== undefined) {
+      array.push(current.value);
+      current = current.next;
+    }
+
+    return array;
   }
 }

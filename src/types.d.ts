@@ -6,42 +6,48 @@ type ExtractGeneric<TExtendsNode> = TExtendsNode extends INode<infer T> ? T : ne
 
 /// --- Graph ---
 interface IVertex<T> extends INode<T> {}
+interface IGraphVertex<T> extends IVertex<T> {
+  idx: number;
+}
+interface IGraphEdgeVertex<T> extends IGraphVertex<T> {
+  weight?: number;
+}
 
 interface IEdge<V> {
-  from: V,
-  to: V
-  weight?: number
+  from: V;
+  to: V;
+  weight?: number;
 }
 
-interface IConnectedVertex<TVertex> {
-    vertexRef: TVertex;
-    inVertices: TVertex[];
-    outVertices: TVertex[];
-}
-
-interface IGraph<TVertex> {
-  vertices: TVertex[],
-  edges: IEdge<TVertex>[];
+interface IGraph<TGraphVertex> {
+  vertices: TGraphVertex[];
+  edges: ISinglyLinkedList<IGraphEdgeVertex<ExtractGeneric<TGraphVertex>>>[];
   directed: boolean;
 
-  addVertex(vertex: TVertex): TVertex;
-  addEdge(edge: IEdge<TVertex>): void;
-  addEdge(from: TVertex, to: TVertex, weight?: number): void;
+  addVertex(vertex: IVertex<ExtractGeneric<TGraphVertex>>): TGraphVertex;
+  // addEdge(edge: IEdge<TVertex>): void;
+  addEdge(from: TGraphVertex, to: TGraphVertex, weight?: number): void;
 
   /**
    * Removes vertex by reference
    */
-  removeVertex(vertex: TVertex): boolean;
+  removeVertex(vertex: TGraphVertex): boolean;
 
   /**
    * Removes vertex by value
    */
-  removeVertex(vertexValue: ExtractGeneric<TVertex>): boolean;
+  removeVertex(vertexValue: ExtractGeneric<TGraphVertex>): boolean;
+
+  getAdjacentTo(vertex: TGraphVertex): TGraphVertex[];
 }
 
-interface IExtendedGraphFunctions<TVertex> {
-  toConnectedVertices(): IConnectedVertex<TVertex>[];
-  toConnectedVertex(vertex: TVertex): IConnectedVertex<TVertex>;
+interface BFSResults<TGraphVertex> {
+  edgeTo: TGraphVertex[];
+  distTo: number[];
+}
+
+interface IGraphAlgorithms<TGraphVertex> {
+  bfs(source?: TGraphVertex): BFSResults<TGraphVertex>;
 }
 /// -------------
 
@@ -64,11 +70,12 @@ interface ILinkedList<TLinkedNode extends INode<unknown>> {
 
   insert(value: ExtractGeneric<TLinkedNode>): TLinkedNode;
   remove(value: ExtractGeneric<TLinkedNode>): TLinkedNode | undefined;
-  find(callback: (node:TLinkedNode) => boolean): TLinkedNode | undefined;
+  find(callback: (node: TLinkedNode) => boolean): TLinkedNode | undefined;
+  toArray(): ExtractGeneric<TLinkedNode>[];
 }
 
 interface ISinglyLinkedNode<T> extends INode<T> {
-  next?: ISinglyLinkedNode<T>
+  next?: ISinglyLinkedNode<T>;
 }
 
 interface ISinglyLinkedList<T> extends ILinkedList<ISinglyLinkedNode<T>> {}
@@ -79,5 +86,33 @@ interface IDoublyLinkedNode<T> extends INode<T> {
 }
 
 interface IDoublyLinkedList<T> extends ILinkedList<IDoublyLinkedNode<T>> {
-  tail?: IDoublyLinkedNode<T>
+  tail?: IDoublyLinkedNode<T>;
+}
+
+//
+
+interface ITreeNode<T> extends INode<T> {
+  children: ITreeNode<T>[];
+}
+
+interface IBinaryTreeNode<T> extends INode<T> {
+  left: IBinaryTreeNode<T> | null;
+  right: IBinaryTreeNode<T> | null;
+}
+
+type NodeCallback<TNode> = (node: TNode) => void;
+
+interface ITreeBase<TNode> {
+  root: TNode | null;
+  find(value: ExtractGeneric<TNode>): TNode | null;
+  insert(value: ExtractGeneric<TNode>): void;
+  remove(value: ExtractGeneric<TNode>): boolean;
+}
+
+interface ITree<T> extends ITreeBase<ITreeNode<T>> {}
+
+interface IBinaryTree<T> extends ITreeBase<IBinaryTreeNode<T>> {
+  inorder: (node: IBinaryTreeNode<T> | null, callback: NodeCallback<IBinaryTreeNode<T>>) => void;
+  preorder: (node: IBinaryTreeNode<T> | null, callback: NodeCallback<IBinaryTreeNode<T>>) => void;
+  postorder: (node: IBinaryTreeNode<T> | null, callback: NodeCallback<IBinaryTreeNode<T>>) => void;
 }

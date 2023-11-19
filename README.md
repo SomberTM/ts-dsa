@@ -26,6 +26,11 @@ Various Data Structures & Algorithms implemented in TypeScript
 ## Algorithms
 - BFS & DFS
   - BFS & DFS Trees
+- Tree Traversals
+  - Inorder
+  - Preorder
+  - Postorder
+- Topological Sort
 - Minimum Spanning Tree Algorithms
   - Prims
   - Kruskals

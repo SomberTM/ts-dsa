@@ -1,4 +1,4 @@
-import { SinglyLinkedList } from "./lists/singly-linked-list";
+import { SinglyLinkedList } from './lists/singly-linked-list';
 
 export class Stack<T> implements IStack<T> {
   private list: ISinglyLinkedList<T>;
@@ -8,7 +8,7 @@ export class Stack<T> implements IStack<T> {
   }
 
   push(value: T): void {
-    const node: ISinglyLinkedNode<T> = { value, next: this.list.root }; 
+    const node: ISinglyLinkedNode<T> = { value, next: this.list.root };
     this.list.root = node;
   }
 
