@@ -24,6 +24,10 @@ export class Graph<T> implements IGraph<IGraphVertex<T>> {
     if (typeof vertexValue === 'object' && vertexValue && 'idx' in vertexValue) {
       this.vertices.splice(vertexValue.idx, 1, undefined as unknown as IGraphVertex<T>);
       this.edges.splice(vertexValue.idx, 1, undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>);
+      for (const edges of this.edges) {
+        const remove = edges.find((edge) => edge.value.idx === vertexValue.idx);
+        if (remove) edges.remove(remove.value);
+      }
       this.availableVertexIndexes.enqueue(vertexValue.idx);
       return true;
     } else {
@@ -32,6 +36,10 @@ export class Graph<T> implements IGraph<IGraphVertex<T>> {
         if (vertex.value === vertexValue) {
           this.vertices.splice(i, 1, undefined as unknown as IGraphVertex<T>);
           this.edges.splice(i, 1, undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>);
+          for (const edges of this.edges) {
+            const remove = edges.find((edge) => edge.value.idx === i);
+            if (remove) edges.remove(remove.value);
+          }
           this.availableVertexIndexes.enqueue(i);
           return true;
         }
@@ -52,7 +60,7 @@ export class Graph<T> implements IGraph<IGraphVertex<T>> {
     return graphVertex;
   }
 
-  public getAdjacentTo(vertex: IGraphVertex<T>): IGraphVertex<T>[] {
-    return this.edges[vertex.idx].toArray();
+  public getAdjacentTo(vertex: IGraphVertex<T>): ISinglyLinkedList<IGraphVertex<T>> {
+    return this.edges[vertex.idx];
   }
 }

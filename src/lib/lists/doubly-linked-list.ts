@@ -1,3 +1,5 @@
+import { LinkedListIterator } from './iterator';
+
 export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
   root?: IDoublyLinkedNode<T> | undefined;
   tail?: IDoublyLinkedNode<T> | undefined;
@@ -49,12 +51,12 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
     }
   }
 
-  remove(value: T): IDoublyLinkedNode<T> | undefined {
+  remove(value: T): boolean {
     const node = this.find((node) => node.value === value);
-    if (!node) return;
+    if (!node) return false;
 
     this.deleteNode(node);
-    return node;
+    return true;
   }
 
   removeRoot(): IDoublyLinkedNode<T> | undefined {
@@ -88,5 +90,9 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
     }
 
     return array;
+  }
+
+  [Symbol.iterator](): { next(): IteratorResult<T, undefined> } {
+    return new LinkedListIterator(this);
   }
 }

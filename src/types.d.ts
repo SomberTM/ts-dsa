@@ -38,7 +38,7 @@ interface IGraph<TGraphVertex> {
    */
   removeVertex(vertexValue: ExtractGeneric<TGraphVertex>): boolean;
 
-  getAdjacentTo(vertex: TGraphVertex): TGraphVertex[];
+  getAdjacentTo(vertex: TGraphVertex): ISinglyLinkedList<TGraphVertex>;
 }
 
 interface BFSResults<TGraphVertex> {
@@ -69,9 +69,13 @@ interface ILinkedList<TLinkedNode extends INode<unknown>> {
   root?: TLinkedNode;
 
   insert(value: ExtractGeneric<TLinkedNode>): TLinkedNode;
-  remove(value: ExtractGeneric<TLinkedNode>): TLinkedNode | undefined;
+  remove(value: ExtractGeneric<TLinkedNode>): boolean;
   find(callback: (node: TLinkedNode) => boolean): TLinkedNode | undefined;
   toArray(): ExtractGeneric<TLinkedNode>[];
+
+  [Symbol.iterator](): {
+    next(): IteratorResult<ExtractGeneric<TLinkedNode>, undefined>;
+  };
 }
 
 interface ISinglyLinkedNode<T> extends INode<T> {
@@ -115,4 +119,34 @@ interface IBinaryTree<T> extends ITreeBase<IBinaryTreeNode<T>> {
   inorder: (node: IBinaryTreeNode<T> | null, callback: NodeCallback<IBinaryTreeNode<T>>) => void;
   preorder: (node: IBinaryTreeNode<T> | null, callback: NodeCallback<IBinaryTreeNode<T>>) => void;
   postorder: (node: IBinaryTreeNode<T> | null, callback: NodeCallback<IBinaryTreeNode<T>>) => void;
+}
+
+type NumberComparator<T> = (a: T, b: T) => number;
+/**
+ * `a` will be considered greater than `b` if true.
+ * And `b` considered greater than `a` if false.
+ */
+type BooleanComparator<T> = (a: T, b: T) => boolean;
+
+type ComparingGreater = 1;
+type ComparingEqual = 0;
+type ComparingLess = -1;
+type BasicNumberComparator<T> = (a: T, b: T) => ComparingGreater | ComparingEqual | ComparingLess;
+
+type Find<T> = (value: T) => boolean;
+
+/**
+ * Represents a heap data structure. Depending on the
+ * provided comparator can represent a min or max heap.
+ */
+interface IHeap<T> {
+  heap: T[];
+  size: number;
+  comparator: BooleanComparator<T>;
+
+  insert(value: T): void;
+  remove(find: Find<T>): boolean;
+  extract(): T | undefined;
+  peek(): T | undefined;
+  isEmpty(): boolean;
 }

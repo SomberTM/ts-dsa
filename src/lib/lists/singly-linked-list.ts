@@ -1,3 +1,5 @@
+import { LinkedListIterator } from './iterator';
+
 export class SinglyLinkedList<T> implements ISinglyLinkedList<T> {
   root?: ISinglyLinkedNode<T> | undefined;
 
@@ -18,12 +20,34 @@ export class SinglyLinkedList<T> implements ISinglyLinkedList<T> {
     return node;
   }
 
-  remove(value: T): ISinglyLinkedNode<T> | undefined {
-    throw new Error('Method not implemented.');
+  remove(value: T): boolean {
+    if (!this.root) return false;
+    if (this.root.value === value) {
+      const node = this.root;
+      this.root = this.root.next;
+      return true;
+    }
+
+    let current = this.root;
+    while (current != undefined && current.next != undefined) {
+      if (current.next.value === value) {
+        current.next = current.next.next;
+        return true;
+      }
+      current = current.next;
+    }
+
+    return false;
   }
 
   find(callback: (node: ISinglyLinkedNode<T>) => boolean): ISinglyLinkedNode<T> | undefined {
-    throw new Error('Method not implemented.');
+    let current = this.root;
+    while (current !== undefined) {
+      if (callback(current)) return current;
+      current = current.next;
+    }
+
+    return undefined;
   }
 
   toArray(): T[] {
@@ -36,5 +60,9 @@ export class SinglyLinkedList<T> implements ISinglyLinkedList<T> {
     }
 
     return array;
+  }
+
+  [Symbol.iterator](): { next(): IteratorResult<T, undefined> } {
+    return new LinkedListIterator(this);
   }
 }
