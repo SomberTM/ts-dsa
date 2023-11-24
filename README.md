@@ -7,7 +7,7 @@ Various Data Structures & Algorithms implemented in TypeScript
 [x] - completed.
 [ ] - work in progress.
 
-- [ ] Graph (Directed & Undirected)
+- [x] Graph (Directed & Undirected)
 - Trees
   - [ ] Basic Tree (n children)
   - [ ] Binary Tree

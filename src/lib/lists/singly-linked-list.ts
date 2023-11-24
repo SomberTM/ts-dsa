@@ -23,7 +23,6 @@ export class SinglyLinkedList<T> implements ISinglyLinkedList<T> {
   remove(value: T): boolean {
     if (!this.root) return false;
     if (this.root.value === value) {
-      const node = this.root;
       this.root = this.root.next;
       return true;
     }
@@ -38,6 +37,27 @@ export class SinglyLinkedList<T> implements ISinglyLinkedList<T> {
     }
 
     return false;
+  }
+
+  removeAll(find: Find<T>): T[] {
+    let removed: T[] = [];
+
+    if (!this.root) return removed;
+    while (this.root !== undefined && find(this.root.value)) {
+      removed.push(this.root.value);
+      this.root = this.root.next;
+    }
+
+    let current = this.root;
+    while (current !== undefined && current.next !== undefined) {
+      if (find(current.next.value)) {
+        removed.push(current.next.value);
+        current.next = current.next.next;
+      }
+      current = current.next;
+    }
+
+    return removed;
   }
 
   find(callback: (node: ISinglyLinkedNode<T>) => boolean): ISinglyLinkedNode<T> | undefined {

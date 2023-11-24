@@ -46,8 +46,21 @@ interface BFSResults<TGraphVertex> {
   distTo: number[];
 }
 
+interface DFSResults<TGraphVertex> {
+  edgeTo: TGraphVertex[];
+  /**
+   * May also be referred to as dfs numbers.
+   */
+  preorder: TGraphVertex[];
+  /**
+   * May also be referred to as dfs finish numbers.
+   */
+  postorder: TGraphVertex[];
+}
+
 interface IGraphAlgorithms<TGraphVertex> {
   bfs(source?: TGraphVertex): BFSResults<TGraphVertex>;
+  dfs(source?: TGraphVertex): DFSResults<TGraphVertex>;
 }
 /// -------------
 
@@ -70,6 +83,7 @@ interface ILinkedList<TLinkedNode extends INode<unknown>> {
 
   insert(value: ExtractGeneric<TLinkedNode>): TLinkedNode;
   remove(value: ExtractGeneric<TLinkedNode>): boolean;
+  removeAll(find: Find<ExtractGeneric<TLinkedNode>>): ExtractGeneric<TLinkedNode>[];
   find(callback: (node: TLinkedNode) => boolean): TLinkedNode | undefined;
   toArray(): ExtractGeneric<TLinkedNode>[];
 

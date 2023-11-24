@@ -1,7 +1,10 @@
+import { Algorithms } from './algorithms';
 import { SinglyLinkedList } from './lists/singly-linked-list';
 import { Queue } from './queue';
+import { type Node } from 'graphviz';
+import Graphviz from 'graphviz';
 
-export class Graph<T> implements IGraph<IGraphVertex<T>> {
+export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGraphVertex<T>> {
   public vertices: IGraphVertex<T>[];
   public edges: ISinglyLinkedList<IGraphEdgeVertex<T>>[];
 
@@ -13,7 +16,7 @@ export class Graph<T> implements IGraph<IGraphVertex<T>> {
     this.availableVertexIndexes = new Queue();
   }
 
-  public addEdge(from: IGraphVertex<T>, to: IGraphVertex<T>, weight?: number | undefined): void {
+  public addEdge(from: IGraphVertex<T>, to: IGraphVertex<T>, weight: number = 1): void {
     this.edges[from.idx].insert({ ...to, weight });
     if (!this.directed) this.edges[to.idx].insert({ ...from, weight });
   }
@@ -25,8 +28,8 @@ export class Graph<T> implements IGraph<IGraphVertex<T>> {
       this.vertices.splice(vertexValue.idx, 1, undefined as unknown as IGraphVertex<T>);
       this.edges.splice(vertexValue.idx, 1, undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>);
       for (const edges of this.edges) {
-        const remove = edges.find((edge) => edge.value.idx === vertexValue.idx);
-        if (remove) edges.remove(remove.value);
+        if (!edges) continue;
+        edges.removeAll((v) => v.idx === vertexValue.idx);
       }
       this.availableVertexIndexes.enqueue(vertexValue.idx);
       return true;
@@ -37,8 +40,8 @@ export class Graph<T> implements IGraph<IGraphVertex<T>> {
           this.vertices.splice(i, 1, undefined as unknown as IGraphVertex<T>);
           this.edges.splice(i, 1, undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>);
           for (const edges of this.edges) {
-            const remove = edges.find((edge) => edge.value.idx === i);
-            if (remove) edges.remove(remove.value);
+            if (!edges) continue;
+            edges.removeAll((v) => v.idx === i);
           }
           this.availableVertexIndexes.enqueue(i);
           return true;
@@ -62,5 +65,34 @@ export class Graph<T> implements IGraph<IGraphVertex<T>> {
 
   public getAdjacentTo(vertex: IGraphVertex<T>): ISinglyLinkedList<IGraphVertex<T>> {
     return this.edges[vertex.idx];
+  }
+
+  public bfs(source?: IGraphVertex<T> | undefined): BFSResults<IGraphVertex<T>> {
+    return Algorithms.bfs(this, source);
+  }
+
+  public dfs(source?: IGraphVertex<T> | undefined): DFSResults<IGraphVertex<T>> {
+    return Algorithms.dfs(this, source);
+  }
+
+  public toImage(outputLocation: string) {
+    const graph = this.directed ? Graphviz.digraph('G') : Graphviz.graph('G');
+
+    for (const v of this.vertices) {
+      graph.addNode(this.vertexValueToString(v));
+    }
+
+    for (let i = 0; i < this.edges.length; i++) {
+      const sourceVertex = this.vertices[i];
+      for (const destinationVertex of this.edges[i])
+        graph.addEdge(this.vertexValueToString(sourceVertex), this.vertexValueToString(destinationVertex));
+    }
+
+    graph.setGraphVizPath('/usr/local/bin');
+    graph.output('png', outputLocation);
+  }
+
+  private vertexValueToString(vertex: IGraphVertex<T>): string {
+    return JSON.stringify(vertex.value).replaceAll(`"`, ``);
   }
 }

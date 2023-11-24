@@ -59,6 +59,23 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
     return true;
   }
 
+  removeAll(find: Find<T>): T[] {
+    let removed: T[] = [];
+
+    if (!this.root) return removed;
+
+    let current: IDoublyLinkedNode<T> | undefined = this.root;
+    while (current !== undefined) {
+      if (find(current.value)) {
+        removed.push(current.value);
+        this.deleteNode(current);
+      }
+      current = current.next;
+    }
+
+    return removed;
+  }
+
   removeRoot(): IDoublyLinkedNode<T> | undefined {
     const node = this.root;
     if (node) this.deleteNode(node);

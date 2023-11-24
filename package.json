@@ -10,6 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/graphviz": "^0.0.39",
     "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "graphviz": "^0.0.9"
   }
 }

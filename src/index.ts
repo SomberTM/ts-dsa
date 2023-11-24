@@ -40,14 +40,22 @@ import { Stack } from './lib/stack';
   // dll.removeRoot();
   // console.log(dll.root)
 
-  const sll = new SinglyLinkedList<number>();
-  sll.insert(5);
-  sll.insert(10);
-  sll.insert(15);
+  // const sll = new SinglyLinkedList<number>();
+  // sll.insert(5);
+  // sll.insert(10);
+  // sll.insert(15);
+  // sll.insert(20);
+  // sll.insert(25);
 
-  for (const value of sll) {
-    console.log(value);
-  }
+  // for (const value of sll) {
+  //   console.log(value);
+  // }
+
+  // sll.removeAll((v) => v === 15 || v === 25);
+  // console.log(sll.root);
+  // for (const value of sll) {
+  //   console.log(value);
+  // }
 
   // const q = new Queue<number>();
   // q.enqueue(5)
@@ -61,23 +69,33 @@ import { Stack } from './lib/stack';
   const C = graph.addVertex({ value: 'C' });
   const D = graph.addVertex({ value: 'D' });
   const E = graph.addVertex({ value: 'E' });
+  const F = graph.addVertex({ value: 'F' });
+  const G = graph.addVertex({ value: 'G' });
+  const H = graph.addVertex({ value: 'H' });
+  const I = graph.addVertex({ value: 'I' });
+  const J = graph.addVertex({ value: 'J' });
 
-  graph.addEdge(A, B);
-  graph.addEdge(B, C);
-  graph.addEdge(C, D);
-  graph.addEdge(D, E);
-  // graph.addEdge(E, C);
+  graph.addEdge(C, B);
+  graph.addEdge(B, A);
+  graph.addEdge(B, E);
+  graph.addEdge(E, D);
+  graph.addEdge(D, C);
+  graph.addEdge(D, F);
+  graph.addEdge(F, I);
+  graph.addEdge(F, J);
+  graph.addEdge(J, C);
+  graph.addEdge(I, H);
+  graph.addEdge(H, G);
+  graph.addEdge(G, D);
 
-  console.log(graph.vertices);
-  graph.removeVertex(B);
-  console.log(graph.vertices);
-  graph.addVertex({ value: 'F' });
-  console.log(graph.vertices);
+  graph.toImage('./output.png');
 
-  // const nonHeap = [1, 3, 5, 2, 6, 8, 9, 10];
-  // const heap = Heap.heapify(nonHeap, (a, b) => a > b);
-  // console.log(heap.peek(), heap.heap);
-  // while (!heap.isEmpty()) {
-  //   console.log(heap.extract(), heap.heap);
-  // }
+  const dfs = graph.dfs(C);
+
+  const nonHeap = [1, 3, 5, 2, 6, 8, 9, 10];
+  const maxHeap = Heap.heapify(nonHeap, (a, b) => a > b);
+  console.log(maxHeap.heap);
+  while (!maxHeap.isEmpty()) {
+    console.log(maxHeap.extract(), maxHeap.heap);
+  }
 })();
