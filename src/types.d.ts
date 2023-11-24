@@ -10,7 +10,7 @@ interface IGraphVertex<T> extends IVertex<T> {
   idx: number;
 }
 interface IGraphEdgeVertex<T> extends IGraphVertex<T> {
-  weight?: number;
+  weight: number;
 }
 
 interface IEdge<V> {
@@ -38,7 +38,7 @@ interface IGraph<TGraphVertex> {
    */
   removeVertex(vertexValue: ExtractGeneric<TGraphVertex>): boolean;
 
-  getAdjacentTo(vertex: TGraphVertex): ISinglyLinkedList<TGraphVertex>;
+  getAdjacentTo(vertex: TGraphVertex): ISinglyLinkedList<IGraphEdgeVertex<ExtractGeneric<TGraphVertex>>>;
 }
 
 interface BFSResults<TGraphVertex> {
@@ -58,9 +58,15 @@ interface DFSResults<TGraphVertex> {
   postorder: TGraphVertex[];
 }
 
+interface DijkstrasResults<TGraphVertex> {
+  dist: number[];
+  previous: TGraphVertex[];
+}
+
 interface IGraphAlgorithms<TGraphVertex> {
   bfs(source?: TGraphVertex): BFSResults<TGraphVertex>;
   dfs(source?: TGraphVertex): DFSResults<TGraphVertex>;
+  dijkstras(source?: TGraphVertex): DijkstrasResults<TGraphVertex>;
 }
 /// -------------
 
@@ -76,6 +82,18 @@ interface IQueue<T> {
   dequeue(): T | undefined;
   peek(): T | undefined;
   isEmpty(): boolean;
+}
+
+interface IPriorityItem<T> {
+  value: T;
+  priority: number;
+}
+
+interface IPriorityQueue<T> {
+  enqueue(value: T, priority: number): void;
+  dequeue(): T | undefined;
+  peek(): T | undefined;
+  set(find: Find<T>, priority: number): void;
 }
 
 interface ILinkedList<TLinkedNode extends INode<unknown>> {

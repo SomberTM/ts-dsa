@@ -1,7 +1,6 @@
 import { Algorithms } from './algorithms';
 import { SinglyLinkedList } from './lists/singly-linked-list';
 import { Queue } from './queue';
-import { type Node } from 'graphviz';
 import Graphviz from 'graphviz';
 
 export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGraphVertex<T>> {
@@ -63,7 +62,7 @@ export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGrap
     return graphVertex;
   }
 
-  public getAdjacentTo(vertex: IGraphVertex<T>): ISinglyLinkedList<IGraphVertex<T>> {
+  public getAdjacentTo(vertex: IGraphVertex<T>): ISinglyLinkedList<IGraphEdgeVertex<T>> {
     return this.edges[vertex.idx];
   }
 
@@ -75,6 +74,10 @@ export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGrap
     return Algorithms.dfs(this, source);
   }
 
+  public dijkstras(source?: IGraphVertex<T> | undefined): DijkstrasResults<IGraphVertex<T>> {
+    return Algorithms.dijkstras(this, source);
+  }
+
   public toImage(outputLocation: string) {
     const graph = this.directed ? Graphviz.digraph('G') : Graphviz.graph('G');
 
@@ -84,15 +87,17 @@ export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGrap
 
     for (let i = 0; i < this.edges.length; i++) {
       const sourceVertex = this.vertices[i];
-      for (const destinationVertex of this.edges[i])
-        graph.addEdge(this.vertexValueToString(sourceVertex), this.vertexValueToString(destinationVertex));
+      for (const destinationVertex of this.edges[i]) {
+        const e = graph.addEdge(this.vertexValueToString(sourceVertex), this.vertexValueToString(destinationVertex));
+        e.set('label', destinationVertex.weight);
+      }
     }
 
     graph.setGraphVizPath('/usr/local/bin');
     graph.output('png', outputLocation);
   }
 
-  private vertexValueToString(vertex: IGraphVertex<T>): string {
+  public vertexValueToString(vertex: IGraphVertex<T>): string {
     return JSON.stringify(vertex.value).replaceAll(`"`, ``);
   }
 }

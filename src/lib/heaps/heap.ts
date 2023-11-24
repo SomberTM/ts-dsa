@@ -1,8 +1,8 @@
-export class Heap<T> implements IHeap<T> {
-  heap: T[];
+import { HeapBase } from './heap-base';
 
-  constructor(public comparator: BooleanComparator<T>) {
-    this.heap = [];
+export class Heap<T> extends HeapBase<T> implements IHeap<T> {
+  constructor(comparator: BooleanComparator<T>) {
+    super(comparator);
   }
 
   public static heapify<T>(array: T[], comparator: BooleanComparator<T>): Heap<T> {
@@ -17,67 +17,6 @@ export class Heap<T> implements IHeap<T> {
     }
 
     return heap;
-  }
-
-  get size() {
-    return this.heap.length;
-  }
-
-  private parent(index: number): number {
-    return (index - 1) / 2;
-  }
-
-  private leftChild(index: number): number {
-    return 2 * index + 1;
-  }
-
-  private rightChild(index: number): number {
-    return 2 * index + 2;
-  }
-
-  private hasParent(index: number): boolean {
-    return index > 0;
-  }
-
-  private hasLeftChild(index: number): boolean {
-    return this.leftChild(index) < this.size;
-  }
-
-  private hasRightChild(index: number): boolean {
-    return this.rightChild(index) < this.size;
-  }
-
-  private swap(index1: number, index2: number): void {
-    const temp: T = this.heap[index1];
-    this.heap[index1] = this.heap[index2];
-    this.heap[index2] = temp;
-  }
-
-  private heapifyUp(index: number): void {
-    while (this.hasParent(index) && this.comparator(this.heap[index], this.heap[this.parent(index)])) {
-      this.swap(index, this.parent(index));
-      index = this.parent(index);
-    }
-  }
-
-  private heapifyDown(index: number): void {
-    while (this.hasLeftChild(index)) {
-      let smallerChildIndex: number = this.leftChild(index);
-      if (
-        this.hasRightChild(index) &&
-        this.comparator(this.heap[this.rightChild(index)], this.heap[smallerChildIndex])
-      ) {
-        smallerChildIndex = this.rightChild(index);
-      }
-
-      if (this.comparator(this.heap[index], this.heap[smallerChildIndex])) {
-        break;
-      } else {
-        this.swap(index, smallerChildIndex);
-      }
-
-      index = smallerChildIndex;
-    }
   }
 
   insert(value: T): void {
