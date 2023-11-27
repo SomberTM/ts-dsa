@@ -32,32 +32,6 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
     return node;
   }
 
-  insertFront(value: T): IDoublyLinkedNode<T> {
-    this.size++;
-
-    const node: IDoublyLinkedNode<T> = { value };
-    node.next = undefined;
-    node.previous = undefined;
-
-    if (!this.root) {
-      this.root = node;
-      this.tail = node;
-      return node;
-    }
-
-    if (!this.root || !this.tail) throw new Error();
-
-    this.tail.next = node;
-    node.previous = this.tail;
-    this.tail = node;
-
-    node.next = this.root;
-    this.root.previous = node;
-    this.root = node;
-
-    return node;
-  }
-
   private deleteNode(node: IDoublyLinkedNode<T>) {
     this.size--;
     if (this.size === 0) {
