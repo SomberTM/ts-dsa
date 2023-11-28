@@ -60,10 +60,10 @@ export class SinglyLinkedList<T> implements ISinglyLinkedList<T> {
     return removed;
   }
 
-  find(callback: (node: ISinglyLinkedNode<T>) => boolean): ISinglyLinkedNode<T> | undefined {
+  find(callback: Find<T>): ISinglyLinkedNode<T> | undefined {
     let current = this.root;
     while (current !== undefined) {
-      if (callback(current)) return current;
+      if (callback(current.value)) return current;
       current = current.next;
     }
 

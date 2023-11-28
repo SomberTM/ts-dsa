@@ -28,7 +28,7 @@ interface IGraphEdgeVertex<T> extends IGraphVertex<T> {
 interface IEdge<V> {
   from: V;
   to: V;
-  weight?: number;
+  weight: number;
 }
 
 interface IGraph<TGraphVertex extends IGraphVertex<unknown>> {
@@ -38,7 +38,7 @@ interface IGraph<TGraphVertex extends IGraphVertex<unknown>> {
 
   addVertex(vertex: IVertex<ExtractGeneric<TGraphVertex>>): TGraphVertex;
   // addEdge(edge: IEdge<TVertex>): void;
-  addEdge(from: TGraphVertex, to: TGraphVertex, weight?: number): void;
+  addEdge(from: TGraphVertex, to: TGraphVertex, weight?: number): IEdge<TGraphVertex>;
 
   /**
    * Removes vertex by reference
@@ -61,7 +61,7 @@ interface ILinkedList<TLinkedNode extends INode<unknown>> {
   insert(value: ExtractGeneric<TLinkedNode>): TLinkedNode;
   remove(value: ExtractGeneric<TLinkedNode>): boolean;
   removeAll(find: Find<ExtractGeneric<TLinkedNode>>): ExtractGeneric<TLinkedNode>[];
-  find(callback: (node: TLinkedNode) => boolean): TLinkedNode | undefined;
+  find(find: Find<ExtractGeneric<TLinkedNode>>): TLinkedNode | undefined;
   toArray(): ExtractGeneric<TLinkedNode>[];
 
   [Symbol.iterator](): {

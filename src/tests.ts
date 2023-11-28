@@ -6,6 +6,7 @@ import { SinglyLinkedList } from './lib/data-structures/singly-linked-list';
 import { Queue } from './lib/data-structures/queue';
 import { Stack } from './lib/data-structures/stack';
 import Graphviz from 'graphviz';
+import { prims } from './lib/algorithms/prims';
 
 (async function () {
   // const stack = new Stack<number>();
@@ -114,8 +115,11 @@ import Graphviz from 'graphviz';
   graph.addEdge(LAX, SFO, 337);
   graph.addEdge(LAX, HNL, 2555);
 
-  graph.toImage('./output.png');
-  dijkstrasGraphImage(graph, PVD);
+  const primsResult = prims(graph);
+  console.log(primsResult);
+
+  // graph.toImage('./output.png');
+  // dijkstrasGraphImage(graph, PVD);
 
   // const nonHeap = [1, 3, 5, 2, 6, 8, 9, 10];
   // const maxHeap = Heap.heapify(nonHeap, (a, b) => a > b);
@@ -125,24 +129,24 @@ import Graphviz from 'graphviz';
   // }
 })();
 
-function dijkstrasGraphImage(g: Graph<any>, source: any) {
-  const graph = g.directed ? Graphviz.digraph('G') : Graphviz.graph('G');
+// function dijkstrasGraphImage(g: Graph<any>, source: any) {
+//   const graph = g.directed ? Graphviz.digraph('G') : Graphviz.graph('G');
 
-  for (const v of g.vertices) {
-    graph.addNode(g.vertexValueToString(v));
-  }
+//   for (const v of g.vertices) {
+//     graph.addNode(g.vertexValueToString(v));
+//   }
 
-  const dijkstras = g.dijkstras(source);
+//   const dijkstras = g.dijkstras(source);
 
-  for (let i = 0; i < g.edges.length; i++) {
-    const sourceVertex = g.vertices[i];
-    for (const destinationVertex of g.edges[i]) {
-      const e = graph.addEdge(g.vertexValueToString(sourceVertex), g.vertexValueToString(destinationVertex));
-      e.set('label', destinationVertex.weight);
-      if (dijkstras.previous[destinationVertex.idx]?.idx === sourceVertex.idx) e.set('color', 'red');
-    }
-  }
+//   for (let i = 0; i < g.edges.length; i++) {
+//     const sourceVertex = g.vertices[i];
+//     for (const destinationVertex of g.edges[i]) {
+//       const e = graph.addEdge(g.vertexValueToString(sourceVertex), g.vertexValueToString(destinationVertex));
+//       e.set('label', destinationVertex.weight);
+//       if (dijkstras.previous[destinationVertex.idx]?.idx === sourceVertex.idx) e.set('color', 'red');
+//     }
+//   }
 
-  graph.setGraphVizPath('/usr/local/bin');
-  graph.output('png', './output-dijkstras.png');
-}
+//   graph.setGraphVizPath('/usr/local/bin');
+//   graph.output('png', './output-dijkstras.png');
+// }

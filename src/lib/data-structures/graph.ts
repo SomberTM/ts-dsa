@@ -15,17 +15,18 @@ export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGrap
     this.availableVertexIndexes = new Queue();
   }
 
-  public addEdge(from: IGraphVertex<T>, to: IGraphVertex<T>, weight: number = 1): void {
+  public addEdge(from: IGraphVertex<T>, to: IGraphVertex<T>, weight: number = 1): IEdge<IGraphVertex<T>> {
     this.edges[from.idx].insert({ ...to, weight });
     if (!this.directed) this.edges[to.idx].insert({ ...from, weight });
+    return { from, to, weight };
   }
 
   public removeVertex(vertex: IGraphVertex<T>): boolean;
   public removeVertex(vertexValue: T): boolean;
   public removeVertex(vertexValue: IGraphVertex<T> | T): boolean {
     if (typeof vertexValue === 'object' && vertexValue && 'idx' in vertexValue) {
-      this.vertices.splice(vertexValue.idx, 1, undefined as unknown as IGraphVertex<T>);
-      this.edges.splice(vertexValue.idx, 1, undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>);
+      this.vertices[vertexValue.idx] = undefined as unknown as IGraphVertex<T>;
+      this.edges[vertexValue.idx] = undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>;
       for (const edges of this.edges) {
         if (!edges) continue;
         edges.removeAll((v) => v.idx === vertexValue.idx);
@@ -36,8 +37,8 @@ export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGrap
       for (let i = 0; i < this.vertices.length; i++) {
         const vertex = this.vertices[i];
         if (vertex.value === vertexValue) {
-          this.vertices.splice(i, 1, undefined as unknown as IGraphVertex<T>);
-          this.edges.splice(i, 1, undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>);
+          this.vertices[i] = undefined as unknown as IGraphVertex<T>;
+          this.edges[i] = undefined as unknown as ISinglyLinkedList<IGraphEdgeVertex<T>>;
           for (const edges of this.edges) {
             if (!edges) continue;
             edges.removeAll((v) => v.idx === i);

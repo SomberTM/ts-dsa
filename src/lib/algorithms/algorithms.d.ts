@@ -1,10 +1,10 @@
 interface BFSResults<TGraphVertex> {
-  edgeTo: TGraphVertex[];
+  edgeTo: (TGraphVertex | undefined)[];
   distTo: number[];
 }
 
 interface DFSResults<TGraphVertex> {
-  edgeTo: TGraphVertex[];
+  edgeTo: (TGraphVertex | undefined)[];
   /**
    * May also be referred to as dfs numbers.
    */
@@ -17,7 +17,7 @@ interface DFSResults<TGraphVertex> {
 
 interface DijkstrasResults<TGraphVertex> {
   dist: number[];
-  previous: TGraphVertex[];
+  previous: (TGraphVertex | undefined)[];
 }
 
 interface IGraphAlgorithms<TGraphVertex> {

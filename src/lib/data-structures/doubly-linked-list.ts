@@ -52,7 +52,7 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
   }
 
   remove(value: T): boolean {
-    const node = this.find((node) => node.value === value);
+    const node = this.find((v) => v === value);
     if (!node) return false;
 
     this.deleteNode(node);
@@ -88,10 +88,10 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
     return node;
   }
 
-  find(callback: (node: IDoublyLinkedNode<T>) => boolean): IDoublyLinkedNode<T> | undefined {
+  find(callback: Find<T>): IDoublyLinkedNode<T> | undefined {
     let current = this.root;
     while (current !== undefined) {
-      if (callback(current)) return current;
+      if (callback(current.value)) return current;
       current = current.next;
     }
     return undefined;

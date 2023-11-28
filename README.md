@@ -4,9 +4,6 @@ Various Data Structures & Algorithms implemented in TypeScript
 
 ## Data Structures
 
-[x] - completed.
-[ ] - work in progress.
-
 - [x] Graph (Directed & Undirected)
 - Trees
   - [ ] Basic Tree (n children)
@@ -30,8 +27,8 @@ Various Data Structures & Algorithms implemented in TypeScript
 
 ## Algorithms
 
-- [ ] BFS
-- [ ] DFS
+- [x] BFS
+- [x] DFS
 - Tree Traversals
   - [ ] Inorder
   - [ ] Preorder
@@ -41,7 +38,7 @@ Various Data Structures & Algorithms implemented in TypeScript
   - [ ] Prims
   - [ ] Kruskals
 - Path Finding
-  - [ ] Dijkstras
+  - [x] Dijkstras
   - [ ] Bellman-Ford
   - [ ] A\* (Maybe)
   - [ ] Floyd-Warshall / AllPairs
