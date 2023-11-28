@@ -19,7 +19,7 @@ Various Data Structures & Algorithms implemented in TypeScript
   - [x] Priority Queue
 - [x] Stack
 - [x] Queue
-- [ ] Dequeue
+- [x] Dequeue
 - Linked Lists
   - [x] Singly
   - [x] Doubly
