@@ -85,4 +85,8 @@ export class SinglyLinkedList<T> implements ISinglyLinkedList<T> {
   [Symbol.iterator](): { next(): IteratorResult<T, undefined> } {
     return new LinkedListIterator(this);
   }
+
+  get size(): number {
+    throw new Error('Not implemented');
+  }
 }

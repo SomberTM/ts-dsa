@@ -4,14 +4,14 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
   root?: IDoublyLinkedNode<T> | undefined;
   tail?: IDoublyLinkedNode<T> | undefined;
 
-  private size: number;
+  private _size: number;
 
   constructor() {
-    this.size = 0;
+    this._size = 0;
   }
 
   insert(value: T): IDoublyLinkedNode<T> {
-    this.size++;
+    this._size++;
 
     const node: IDoublyLinkedNode<T> = { value };
     node.next = undefined;
@@ -33,8 +33,8 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
   }
 
   private deleteNode(node: IDoublyLinkedNode<T>) {
-    this.size--;
-    if (this.size === 0) {
+    this._size--;
+    if (this._size === 0) {
       this.root = undefined;
       this.tail = undefined;
     } else {
@@ -111,5 +111,9 @@ export class DoublyLinkedList<T> implements IDoublyLinkedList<T> {
 
   [Symbol.iterator](): { next(): IteratorResult<T, undefined> } {
     return new LinkedListIterator(this);
+  }
+
+  get size() {
+    return this._size;
   }
 }
