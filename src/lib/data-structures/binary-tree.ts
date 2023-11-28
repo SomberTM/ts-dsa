@@ -1,4 +1,4 @@
-class BinarySearchTree<T> implements IBinaryTree<T> {
+export class BinarySearchTree<T> implements IBinaryTree<T> {
   constructor(public root: IBinaryTreeNode<T> | null) {}
 
   public find(value: T): IBinaryTreeNode<T> | null {

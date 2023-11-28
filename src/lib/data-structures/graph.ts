@@ -1,5 +1,5 @@
-import { Algorithms } from './algorithms';
-import { SinglyLinkedList } from './lists/singly-linked-list';
+import { bfs, dfs, dijkstras } from '../algorithms';
+import { SinglyLinkedList } from './singly-linked-list';
 import { Queue } from './queue';
 import Graphviz from 'graphviz';
 
@@ -67,15 +67,15 @@ export class Graph<T> implements IGraph<IGraphVertex<T>>, IGraphAlgorithms<IGrap
   }
 
   public bfs(source?: IGraphVertex<T> | undefined): BFSResults<IGraphVertex<T>> {
-    return Algorithms.bfs(this, source);
+    return bfs(this, source);
   }
 
   public dfs(source?: IGraphVertex<T> | undefined): DFSResults<IGraphVertex<T>> {
-    return Algorithms.dfs(this, source);
+    return dfs(this, source);
   }
 
   public dijkstras(source?: IGraphVertex<T> | undefined): DijkstrasResults<IGraphVertex<T>> {
-    return Algorithms.dijkstras(this, source);
+    return dijkstras(this, source);
   }
 
   public toImage(outputLocation: string) {

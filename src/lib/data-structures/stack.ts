@@ -1,4 +1,4 @@
-import { SinglyLinkedList } from './lists/singly-linked-list';
+import { SinglyLinkedList } from './singly-linked-list';
 
 export class Stack<T> implements IStack<T> {
   private list: ISinglyLinkedList<T>;

@@ -1,4 +1,4 @@
-import { DoublyLinkedList } from './lists/doubly-linked-list';
+import { DoublyLinkedList } from './doubly-linked-list';
 
 export class Queue<T> implements IQueue<T> {
   private list: DoublyLinkedList<T>;

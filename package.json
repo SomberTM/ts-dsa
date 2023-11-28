@@ -1,8 +1,8 @@
 {
-  "name": "dsa",
+  "name": "ts-dsa",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "ts-node --files src/index.ts"
   },

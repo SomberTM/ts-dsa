@@ -1,18 +1,18 @@
 import { HeapBase } from './heap-base';
 
-export enum HeapType {
+export enum HeapRepresentation {
   MinHeap,
   MaxHeap,
 }
 
 export class PriorityQueue<T> extends HeapBase<IPriorityItem<T>> implements IPriorityQueue<T> {
-  constructor(heapType: HeapType = HeapType.MinHeap) {
+  constructor(heapType: HeapRepresentation = HeapRepresentation.MinHeap) {
     let comparator: (a: IPriorityItem<T>, b: IPriorityItem<T>) => boolean;
     switch (heapType) {
-      case HeapType.MinHeap:
+      case HeapRepresentation.MinHeap:
         comparator = (a, b) => a.priority < b.priority;
         break;
-      case HeapType.MaxHeap:
+      case HeapRepresentation.MaxHeap:
         comparator = (a, b) => a.priority > b.priority;
         break;
     }
@@ -38,6 +38,7 @@ export class PriorityQueue<T> extends HeapBase<IPriorityItem<T>> implements IPri
     for (let i = 0; i < this.size; i++) {
       if (find(this.heap[i].value)) {
         this.heap[i].priority = priority;
+
         this.heapifyUp(i);
         this.heapifyDown(i);
         return;
