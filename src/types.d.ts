@@ -108,6 +108,8 @@ interface ILinkedList<TLinkedNode extends INode<unknown>> {
   [Symbol.iterator](): {
     next(): IteratorResult<ExtractGeneric<TLinkedNode>, undefined>;
   };
+
+  get size(): number;
 }
 
 interface ISinglyLinkedNode<T> extends INode<T> {
@@ -124,8 +126,6 @@ interface IDoublyLinkedNode<T> extends INode<T> {
 interface IDoublyLinkedList<T> extends ILinkedList<IDoublyLinkedNode<T>> {
   tail?: IDoublyLinkedNode<T>;
 }
-
-//
 
 interface ITreeNode<T> extends INode<T> {
   children: ITreeNode<T>[];
@@ -180,5 +180,15 @@ interface IHeap<T> {
   remove(find: Find<T>): boolean;
   extract(): T | undefined;
   peek(): T | undefined;
+  isEmpty(): boolean;
+}
+
+interface IDequeue<T> {
+  insertFront(value: T): void;
+  insertBack(value: T): void;
+  removeFront(): T | undefined;
+  removeBack(): T | undefined;
+  peekFront(): T | undefined;
+  peekBack(): T | undefined;
   isEmpty(): boolean;
 }
