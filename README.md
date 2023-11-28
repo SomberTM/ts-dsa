@@ -19,7 +19,7 @@ Various Data Structures & Algorithms implemented in TypeScript
 - Heap
   - [x] Min/Max Binary Heap
   - [ ] Fibonnaci Heap
-  - [ ] Priority Queue
+  - [x] Priority Queue
 - [x] Stack
 - [x] Queue
 - [ ] Dequeue
