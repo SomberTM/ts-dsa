@@ -212,3 +212,34 @@ export async function bucketSort(this: SorterStore) {
   }
 }
 bucketSort.displayName = 'Bucket Sort';
+
+export async function radixSort(this: SorterStore) {
+  let max = Math.max(...this.array);
+
+  for (let i = 1; max / i > 0; i *= 10) {
+    let display = new Array(this.array.length + 1).fill(0);
+    let max = Math.max(...this.array);
+
+    let freq = new Array(max + 1).fill(0);
+
+    for (let i = 0; i < this.array.length; i++) {
+      const num = Math.floor(this.array.length[i] / i) % 10;
+      freq[num]++;
+    }
+
+    for (let i = 1; i < 10; i++) {
+      freq[i] += freq[i - 1];
+    }
+
+    for (let i = this.array.length - 1; i >= 0; i--) {
+      const num = Math.floor(this.array[i] / i) % 10;
+      display[freq[num] - 1] = this.array[i];
+      freq[num]--;
+    }
+
+    for (let i = 0; i < this.array.length; i++) {
+      this.array[i] = display[i];
+    }
+  }
+}
+radixSort.displayName = 'Radix Sort';
